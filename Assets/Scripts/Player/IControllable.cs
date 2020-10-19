@@ -2,5 +2,5 @@
 
 interface IControllable 
 {
-    void UpdatePosition(Vector2 newPosition);
+    void UpdateInput();
 }

@@ -2,43 +2,50 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : BaseControllable
+public class Player : BaseControllable, IShootable
 {
-    public float speed = 100;
+    public GameObject bulletPrefab;
+    public float fireRate = .1f;
 
-    public Player() { }
-
-    public Player(Transform transform, Vector2 initialPosition) : base(transform, initialPosition)
-    {               
-    }
+    List<Projectile> _projectiles = new List<Projectile>();
+    int _bulletIndex = 0;
     
     void Awake()
     {
-        Player p = new Player
+        Transform = this.transform;
+        Camera = Camera.main;
+
+        for (int i = 0; i < 25; i++)
         {
-            Transform = this.transform,
-            Position = Vector2.zero
-        };
+            Projectile p = Instantiate(bulletPrefab).GetComponent<Projectile>();
+            p.gameObject.SetActive(false);
+            _projectiles.Add(p);
+        }
+
+        StartCoroutine(ShootingSequence());
     }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.D))
-        {
-            UpdatePosition(new Vector3(speed * Time.deltaTime, 0));
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            UpdatePosition(new Vector3(-speed * Time.deltaTime, 0));
-        }
+        UpdateInput();
+    }
 
-        if (Input.GetKey(KeyCode.W))
+    public IEnumerator ShootingSequence()
+    {
+
+        //YieldInstruction yi = ;
+        while (true)
         {
-            UpdatePosition(new Vector3(0, speed * Time.deltaTime));
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            UpdatePosition(new Vector3(0, -speed * Time.deltaTime));
+            _projectiles[_bulletIndex].gameObject.SetActive(true);
+            _projectiles[_bulletIndex].Position = transform.position;
+
+            if (_bulletIndex >= _projectiles.Count - 1)
+                _bulletIndex = 0;
+            else
+                _bulletIndex++;
+
+            // TODO cache this in the future? this is for debugging
+            yield return new WaitForSeconds(fireRate);
         }
     }
 }
