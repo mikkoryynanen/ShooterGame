@@ -1,15 +1,38 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Projectile : BaseMoveable
+public class Projectile : BaseMoveable, ITimeDisableable
 {
-    private void Awake()
+    float _lifetimeTimer = 0f;
+
+
+    public override void Awake()
     {
-        Transform = this.transform;
+        base.Awake();
+        Direction = transform.right;
     }
 
-    private void Update()
+    public override void Update()
     {
-        UpdatePosition(-Vector2.left);
+        base.Update();
+        DisableTimer();
+    }
+
+    public void DisableTimer()
+    {
+        if (!this.gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
+        if (_lifetimeTimer >= 2)
+        {
+            ResetPosition();
+            _lifetimeTimer = 0f;
+            this.gameObject.SetActive(false);
+        }
+        else
+        {
+            _lifetimeTimer += Time.deltaTime;
+        }
     }
 }

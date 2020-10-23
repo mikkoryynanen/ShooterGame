@@ -4,15 +4,68 @@ using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private static Dictionary<string, List<GameObject>> _pooledObjects = new Dictionary<string, List<GameObject>>();
+
+
+    public static void Add(string key, GameObject prefab, int count = 10)
     {
-        
+        try
+        {
+            if (!_pooledObjects.ContainsKey(key))
+            {
+                _pooledObjects.Add(key, new List<GameObject>());
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                GameObject go = Instantiate(prefab);
+                go.SetActive(false);
+                _pooledObjects[key].Add(go);
+
+            }
+        }
+        catch (System.Exception e) {  }
+    }    
+
+    public static GameObject Get(string key)
+    {
+        try
+        {
+            if (_pooledObjects.ContainsKey(key))
+            {
+                foreach (GameObject obj in _pooledObjects[key])
+                {
+                    if (!obj.activeInHierarchy)
+                    {
+                        obj.SetActive(true);
+                        return obj;
+                    }
+                }
+            }
+        }
+        catch (System.Exception e) { }
+
+        Debug.LogErrorFormat("Could not get item with key {0}", key);
+        return null;
     }
 
-    // Update is called once per frame
-    void Update()
+    public static T Get<T>(string key) where T : class
     {
-        
+        try
+        {
+            if (_pooledObjects.ContainsKey(key))
+            {
+                foreach (GameObject obj in _pooledObjects[key])
+                {
+                    if (!obj.activeInHierarchy)
+                    {
+                        obj.SetActive(true);
+                        return obj.GetComponent<T>();
+                    }
+                }
+            }
+        }
+        catch (System.Exception e) { }
+        return null;
     }
 }

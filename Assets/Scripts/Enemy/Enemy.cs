@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-public class Enemy : BaseMoveable
+public class Enemy : BaseMoveable, IDamageable
 {
     public int health = 5;
 
@@ -11,24 +11,24 @@ public class Enemy : BaseMoveable
         Position = this.transform.position;
     }
 
-    void Update()
-    {
-        UpdatePosition(Vector2.left);
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.LogFormat("{0} collided with {1}", this.gameObject.name, collision.gameObject.name);
         if (collision.gameObject.CompareTag("Projectile"))
         {
-            if (health > 0)
-            {
-                health--;
-            }
-            else
-            {
-                this.gameObject.SetActive(false);
-            }
+            TakeDamage(1);
+        }
+    }
+
+    public void TakeDamage(float amount)
+    {
+        if (health > 0)
+        {
+            health--;
+        }
+        else
+        {
+            this.gameObject.SetActive(false);
         }
     }
 }

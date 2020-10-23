@@ -2,6 +2,6 @@
 
 interface IMoveable
 { 
-    void UpdatePosition(Vector2 newPosition);
+    void UpdatePosition();
     void ClampMovement();
 }

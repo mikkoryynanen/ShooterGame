@@ -14,12 +14,23 @@ public abstract class BaseMoveable : MonoBehaviour, IMoveable
 
     public Transform Transform { get; set; }
     public Vector2 Position { get; set; }
+    public Vector2 Direction { get; set; }
     public Camera Camera { get; set; }
-
-    public void UpdatePosition(Vector2 newPosition)
+    
+    public virtual void Awake()
     {
-        Position += newPosition * Speed * Time.deltaTime;
-        Transform.position = Position;
+        Transform = this.transform;        
+    }
+
+    public virtual void Update()
+    {
+        UpdatePosition();
+    }
+
+    public void UpdatePosition()
+    {
+        //Position += newPosition * Speed * Time.deltaTime;
+        transform.position += new Vector3(Direction.x * Speed * Time.deltaTime, Direction.y * Speed * Time.deltaTime);
 
         ClampMovement();
     }
@@ -35,5 +46,11 @@ public abstract class BaseMoveable : MonoBehaviour, IMoveable
         pos.x = Mathf.Clamp01(pos.x);
         pos.y = Mathf.Clamp01(pos.y);
         Position = Camera.ViewportToWorldPoint(pos);
+    }
+
+    protected void ResetPosition()
+    {
+        Position = Vector2.zero;
+        Transform.position = Position;
     }
 }
