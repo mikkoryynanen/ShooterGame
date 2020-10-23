@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,10 +8,11 @@ public class ObjectPooler : MonoBehaviour
     private static Dictionary<string, List<GameObject>> _pooledObjects = new Dictionary<string, List<GameObject>>();
 
 
-    public static void Add(string key, GameObject prefab, int count = 10)
+    public static void Add<T>(GameObject prefab, int count = 10)
     {
         try
         {
+            string key = typeof(T).Name;
             if (!_pooledObjects.ContainsKey(key))
             {
                 _pooledObjects.Add(key, new List<GameObject>());
@@ -49,10 +51,11 @@ public class ObjectPooler : MonoBehaviour
         return null;
     }
 
-    public static T Get<T>(string key) where T : class
+    public static T Get<T>() where T : class
     {
         try
         {
+            string key = typeof(T).Name;
             if (_pooledObjects.ContainsKey(key))
             {
                 foreach (GameObject obj in _pooledObjects[key])

@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
 
     void Awake()
     {
-        ObjectPooler.Add("enemy", enemyPrefab);
+        ObjectPooler.Add<Enemy>(enemyPrefab);
 
         StartCoroutine(SpawnRoutine());
     }
@@ -21,8 +21,9 @@ public class EnemySpawner : MonoBehaviour
 
         while (true)
         {
-            GameObject go = ObjectPooler.Get("enemy");
-            go.transform.localRotation = go.transform.localRotation;
+            Enemy e = ObjectPooler.Get<Enemy>();
+            e.transform.position = spawnLocation.transform.position;
+
             yield return spawnInstruction;
         }
     }

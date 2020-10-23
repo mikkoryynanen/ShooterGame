@@ -11,7 +11,7 @@ public class Player : BaseControllable, IShootable
     {
         Camera = Camera.main;
 
-        ObjectPooler.Add("projectile", bulletPrefab, 50);
+        ObjectPooler.Add<Projectile>(bulletPrefab, 50);
 
         StartCoroutine(ShootingSequence());
     }
@@ -27,7 +27,7 @@ public class Player : BaseControllable, IShootable
         //YieldInstruction yi = ;
         while (true)
         {
-            Projectile b = ObjectPooler.Get<Projectile>("projectile");
+            Projectile b = ObjectPooler.Get<Projectile>();
             b.transform.position = this.transform.position;
 
             // TODO cache this in the future? this is for debugging
