@@ -4,7 +4,6 @@ public class Projectile : BaseMoveable, ITimeDisableable
 {
     float _lifetimeTimer = 0f;
 
-
     public override void Awake()
     {
         base.Awake();
@@ -14,6 +13,7 @@ public class Projectile : BaseMoveable, ITimeDisableable
     public override void Update()
     {
         base.Update();
+
         DisableTimer();
     }
 

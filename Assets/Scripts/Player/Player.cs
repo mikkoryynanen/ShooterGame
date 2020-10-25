@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SkillsManager))]
 public class Player : BaseControllable, IShootable
 {
     public GameObject bulletPrefab;
     public float fireRate = .1f;
+
+    SkillsManager _skillsManager;
     
     void Start()
     {
         Camera = Camera.main;
+        _skillsManager = GetComponent<SkillsManager>();
+        _skillsManager.Init();
 
         ObjectPooler.Add<Projectile>(bulletPrefab, 50);
 

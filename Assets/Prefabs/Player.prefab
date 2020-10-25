@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3112598812995329383}
   - component: {fileID: 534572342}
+  - component: {fileID: 6199867100919303452}
   - component: {fileID: 5561274172452211845}
   m_Layer: 8
   m_Name: Player
@@ -49,6 +50,18 @@ MonoBehaviour:
   bulletPrefab: {fileID: 9071179240614170236, guid: ab06a73eb1d2720449ddaa006ef7b2cf,
     type: 3}
   fireRate: 0.2
+--- !u!114 &6199867100919303452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3861078667144756155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d648428ed692f44b9470e41006dd4e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!61 &5561274172452211845
 BoxCollider2D:
   m_ObjectHideFlags: 0
